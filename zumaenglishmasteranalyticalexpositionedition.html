@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zuma English Master: Analytical Exposition Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #090d16;
+            color: #f8fafc;
+            user-select: none;
+            overflow-x: hidden;
+        }
+        .font-game {
+            font-family: 'Fredoka One', cursive;
+        }
+        .font-cert {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Certificate Styling for Print & PDF */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printableCertificate, #printableCertificate * {
+                visibility: visible;
+            }
+            #printableCertificate {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 20px;
+                box-shadow: none !important;
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* Custom Button & Visual Glow Effects */
+        .btn-glow {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+        }
+        .btn-glow:active {
+            transform: translateY(1px);
+        }
+
+        .zuma-canvas-container {
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .cert-border {
+            border: 10px double #b45309;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <header class="bg-slate-900/90 border-b border-amber-500/30 backdrop-blur px-6 py-3 sticky top-0 z-50 flex justify-between items-center shadow-xl">
+        <div class="flex items-center gap-3">
+            <div class="bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950 p-2.5 rounded-2xl text-xl font-bold font-game flex items-center justify-center w-11 h-11 shadow-lg">
+                <i class="fa-solid fa-circle-dot"></i>
+            </div>
+            <div>
+                <h1 class="font-game text-xl text-amber-400 tracking-wide flex items-center gap-2">
+                    Zuma English Master <span class="text-xs font-sans px-2 py-0.5 bg-amber-500/20 text-amber-300 rounded-full border border-amber-500/40">Fase F Kelas XI</span>
+                </h1>
+                <p class="text-xs text-slate-400">Analytical Exposition Interactive Challenge • SMA Kelas 11</p>
+            </div>
+        </div>
+
+        <div id="topUserInfo" class="hidden flex items-center gap-5 bg-slate-800/90 px-4 py-1.5 rounded-full border border-slate-700">
+            <div class="text-right">
+                <span id="navPlayerName" class="font-bold text-amber-300 text-sm block">Nama Siswa</span>
+                <span id="navPlayerClass" class="text-xs text-slate-400">Kelas XI 1</span>
+            </div>
+            <div class="flex items-center gap-2 bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full font-game text-sm border border-amber-500/30">
+                <i class="fa-solid fa-star text-amber-400"></i>
+                <span id="topScore">0</span> Pts
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4 relative">
+
+        <!-- ================= SCREEN 1: REGISTRATION & INSTRUCTIONS ================= -->
+        <div id="screenRegistration" class="max-w-lg w-full bg-slate-900/95 border-2 border-amber-500/40 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden my-auto backdrop-blur">
+            <div class="absolute -top-12 -right-12 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl"></div>
+
+            <div class="text-center mb-6 relative">
+                <div class="inline-flex p-4 bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/40 rounded-2xl mb-3 text-amber-400 text-4xl shadow-inner animate-bounce">
+                    <i class="fa-solid fa-frog"></i>
+                </div>
+                <h2 class="text-3xl font-game text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-300 to-yellow-400">ZUMA EXPOSITION</h2>
+                <p class="text-xs text-slate-300 mt-1 max-w-sm mx-auto">Selamat datang! Uji pemahamanmu tentang Struktur & Tata Bahasa <i>Analytical Exposition Text</i> dalam tantangan Zuma!</p>
+            </div>
+
+            <form id="registrationForm" onsubmit="startGame(event)" class="space-y-4 relative">
+                <div>
+                    <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-1.5">Nama Lengkap Siswa</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-500"></i>
+                        <input type="text" id="inputName" required placeholder="Masukkan nama lengkap Anda..." class="w-full bg-slate-950 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-1.5">Pilih Kelas XI SMA</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-graduation-cap absolute left-4 top-3.5 text-slate-500 z-10"></i>
+                        <select id="inputClass" required class="w-full bg-slate-950 border border-slate-700 rounded-xl py-3 pl-11 pr-4 text-white focus:outline-none focus:border-amber-500 transition-colors text-sm appearance-none cursor-pointer">
+                            <option value="" disabled selected>-- Pilih Kelas --</option>
+                            <option value="XI 1">Kelas XI 1</option>
+                            <option value="XI 2">Kelas XI 2</option>
+                            <option value="XI 3">Kelas XI 3</option>
+                            <option value="XI 4">Kelas XI 4</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-3.5 text-slate-500 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-2">
+                    <p class="font-bold text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-gamepad"></i> Petunjuk Permainan:</p>
+                    <ul class="list-disc list-inside space-y-1 text-slate-400">
+                        <li>Arahkan katak shooter menggunakan mouse atau layar sentuh.</li>
+                        <li>Dengarkan soal audio atau baca petunjuk pada kartu misi.</li>
+                        <li>Tembak bola berwarna yang <b>sesuai dengan fungsi/komponen</b> dalam soal.</li>
+                        <li>Selesaikan seluruh level untuk meraih SertifikatKelulusan!</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-game text-lg rounded-xl btn-glow flex items-center justify-center gap-2 cursor-pointer mt-2">
+                    <i class="fa-solid fa-play"></i> MULAI PETUALANGAN ZUMA
+                </button>
+            </form>
+        </div>
+
+
+        <!-- ================= SCREEN 2: INTERACTIVE ZUMA GAME ARENA ================= -->
+        <div id="screenGame" class="hidden w-full max-w-5xl bg-slate-900/90 border border-slate-800 rounded-3xl p-4 md:p-6 shadow-2xl flex-col gap-5 backdrop-blur">
+            
+            <!-- Level Info Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span id="levelBadge" class="bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-game px-3 py-1 rounded-xl text-base shadow">
+                        LEVEL 1
+                    </span>
+                    <div>
+                        <h3 id="levelTitle" class="font-bold text-white text-base md:text-lg">Thesis & Social Function</h3>
+                        <p id="levelSubtitle" class="text-xs text-slate-400">Cocokkan Thesis Statement & Tujuan Teks Analytical Exposition!</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <div class="text-right">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 block">Sisa Waktu/Target</span>
+                        <span id="targetStatus" class="font-game text-amber-400 text-sm">3 Jawaban Benar Lagi</span>
+                    </div>
+                    <button onclick="toggleAudio()" id="audioBtn" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-xl border border-slate-700 text-sm cursor-pointer">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ZUMA GAME CANVAS & ARENA -->
+            <div class="relative w-full rounded-2xl overflow-hidden zuma-canvas-container border-2 border-slate-700/60 shadow-2xl">
+                
+                <!-- Canvas Element -->
+                <canvas id="zumaCanvas" class="w-full h-[320px] md:h-[380px] block cursor-crosshair"></canvas>
+
+                <!-- Audio Prompt Trigger Button -->
+                <button onclick="speakQuestion()" class="absolute top-3 left-3 bg-slate-900/90 hover:bg-slate-800 text-amber-300 border border-amber-500/40 text-xs px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-lg backdrop-blur cursor-pointer">
+                    <i class="fa-solid fa-volume-high text-amber-400 animate-pulse"></i> Dengarkan Soal Audio
+                </button>
+
+                <!-- Current Quiz Prompt Overlay Card -->
+                <div class="absolute bottom-3 left-3 right-3 bg-slate-900/95 border border-slate-700 p-3 md:p-4 rounded-xl shadow-2xl backdrop-blur flex flex-col md:flex-row items-center gap-3">
+                    
+                    <!-- Question Visual Media -->
+                    <div id="qMediaBox" class="w-full md:w-36 h-20 bg-slate-950 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center border border-slate-800 relative">
+                        <img id="qImage" src="" alt="Question Illustration" class="w-full h-full object-cover">
+                    </div>
+
+                    <!-- Question Text Context -->
+                    <div class="flex-grow text-center md:text-left">
+                        <div class="flex items-center justify-center md:justify-start gap-2 mb-1">
+                            <span class="text-[10px] font-extrabold uppercase bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded border border-amber-500/30">Soal Aktif</span>
+                            <span id="qCategory" class="text-[10px] text-emerald-400 font-semibold">Structure Analysis</span>
+                        </div>
+                        <h4 id="questionPrompt" class="text-xs md:text-sm font-semibold text-slate-100 line-clamp-2">
+                            Loading question text...
+                        </h4>
+                        <p id="questionHint" class="text-[11px] text-amber-300/90 italic mt-0.5">
+                            Petunjuk: Tembak bola dengan label warna yang tepat!
+                        </p>
+                    </div>
+
+                    <!-- Target Legend Color Options -->
+                    <div id="colorLegend" class="flex md:flex-col gap-1.5 justify-center flex-shrink-0 text-[11px] font-bold">
+                        <!-- Legend keys populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- In-game Notification Banner -->
+            <div id="gameNotification" class="hidden p-3 rounded-xl text-xs md:text-sm font-bold flex items-center justify-between transition-all">
+                <span id="notifText">Notification Message</span>
+                <button onclick="closeNotif()" class="text-slate-950 bg-white/20 hover:bg-white/40 px-2 py-0.5 rounded text-xs cursor-pointer">OK</button>
+            </div>
+        </div>
+
+
+        <!-- ================= SCREEN 3: OFFICIAL ACADEMIC CERTIFICATE ================= -->
+        <div id="screenCertificate" class="hidden max-w-3xl w-full my-auto p-2">
+            <div id="printableCertificate" class="bg-gradient-to-b from-amber-50 via-orange-50 to-amber-100 p-6 md:p-10 rounded-3xl text-slate-900 cert-border shadow-2xl relative overflow-hidden">
+                
+                <!-- Background Seal Watermark -->
+                <div class="absolute -right-12 -bottom-12 opacity-10 pointer-events-none text-amber-900 text-[180px]">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+
+                <!-- Header -->
+                <div class="text-center space-y-2 border-b-2 border-amber-900/30 pb-6">
+                    <div class="inline-flex items-center gap-2 text-amber-900 font-game text-xl">
+                        <i class="fa-solid fa-graduation-cap text-2xl text-amber-700"></i>
+                        <span>AKADEMI BAHASA INGGRIS SMA FASE F</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 font-cert tracking-wide">SERTIFIKAT KELULUSAN</h2>
+                    <p class="text-xs text-amber-900 font-bold uppercase tracking-widest">Mastery of Analytical Exposition Text</p>
+                </div>
+
+                <!-- Certificate Body -->
+                <div class="py-6 text-center space-y-4">
+                    <p class="text-xs md:text-sm text-slate-700">Sertifikat Penghargaan ini dengan bangga diberikan kepada:</p>
+                    <h3 id="certName" class="text-2xl md:text-4xl font-extrabold text-amber-900 font-cert underline decoration-amber-500 decoration-wavy decoration-2">
+                        NAMA SISWA
+                    </h3>
+                    <p id="certClass" class="text-sm font-bold text-slate-800">Kelas: XI 1</p>
+
+                    <p class="text-xs md:text-sm text-slate-700 max-w-xl mx-auto leading-relaxed pt-2">
+                        Telah berhasil menyelesaikan seluruh tantangan gim edukasi interaktif <span class="font-bold text-amber-950">Zuma English Master</span>. Dinyatakan menguasai <i>Thesis Statements, Supporting Arguments, Reiteration, Evaluative Words, Conjunctions, and Language Features</i> dalam Kurikulum Merdeka Fase F.
+                    </p>
+
+                    <!-- Score Badges -->
+                    <div class="flex justify-center gap-6 pt-2">
+                        <div class="bg-amber-200/80 px-5 py-2.5 rounded-2xl border border-amber-400 shadow-sm">
+                            <span class="block text-[10px] text-amber-900 font-bold uppercase">Total Skor Akhir</span>
+                            <span id="certScore" class="text-2xl font-game text-amber-800">450 Pts</span>
+                        </div>
+                        <div class="bg-emerald-200/80 px-5 py-2.5 rounded-2xl border border-emerald-400 shadow-sm">
+                            <span class="block text-[10px] text-emerald-900 font-bold uppercase">Predikat</span>
+                            <span class="text-2xl font-game text-emerald-900">EXPERT (A+)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signatures -->
+                <div class="flex justify-between items-end pt-6 border-t border-amber-900/20 text-xs">
+                    <div class="text-center">
+                        <div class="font-bold text-slate-900">Guru Bahasa Inggris</div>
+                        <div class="h-10 flex items-center justify-center italic text-amber-900 font-serif text-sm">Fase F Educator</div>
+                        <div class="border-t border-amber-900/40 pt-1 font-semibold text-slate-700">Tanda Tangan Digital</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-14 h-14 bg-gradient-to-br from-amber-600 to-orange-600 text-amber-100 rounded-full flex items-center justify-center font-game text-xl mx-auto shadow-md border-2 border-amber-200">
+                            <i class="fa-solid fa-seal text-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-bold text-slate-900">Tanggal Selesai</div>
+                        <div id="certDate" class="h-10 flex items-center justify-center font-bold text-slate-800">16 Oktober 2026</div>
+                        <div class="border-t border-amber-900/40 pt-1 font-semibold text-slate-700">Sistem Asesmen Digital</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-8 flex flex-wrap gap-3 justify-center no-print">
+                    <button onclick="printCertificate()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition-all flex items-center gap-2 btn-glow cursor-pointer">
+                        <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+                    </button>
+                    <button onclick="restartGame()" class="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-slate-200 font-bold rounded-xl transition-all flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-rotate-right"></i> Main Lagi
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-950 border-t border-slate-800 py-3 text-center text-xs text-slate-500">
+        Zuma English Master: Analytical Exposition Edition • Bahasa Inggris SMA Kelas 11 (Fase F)
+    </footer>
+
+    <script>
+        /* GAME DATA STRUCTURE: QUESTIONS & ZUMA COLOR PALETTES */
+        const ZUMA_COLORS = [
+            { id: 'red', name: 'Thesis / Social Function', hex: '#ef4444', text: 'THESIS' },
+            { id: 'blue', name: 'Arguments / Evidence', hex: '#3b82f6', text: 'ARGUMENT' },
+            { id: 'green', name: 'Reiteration / Conclusion', hex: '#10b981', text: 'REITERATION' },
+            { id: 'purple', name: 'Causal Conjunctions', hex: '#a855f7', text: 'CONJUNCTION' }
+        ];
+
+        const LEVEL_QUESTIONS = [
+            // LEVEL 1: Thesis & Social Function
+            [
+                {
+                    prompt: "Which part of Analytical Exposition introduces the topic and clearly states the writer's stance?",
+                    correctColor: 'red',
+                    category: "Text Structure",
+                    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&auto=format&fit=crop&q=60",
+                    hint: "Identik dengan paragraf pembuka tulisan argumentatif."
+                },
+                {
+                    prompt: "What is the main goal/social function of an Analytical Exposition text?",
+                    correctColor: 'red',
+                    category: "Social Function",
+                    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=60",
+                    hint: "To convince the reader that the issue is an important topic to discuss."
+                },
+                {
+                    prompt: "'In conclusion, recycling plastic is essential to preserve our clean environment.' - This sentence belongs to:",
+                    correctColor: 'green',
+                    category: "Text Organization",
+                    image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&auto=format&fit=crop&q=60",
+                    hint: "Bagian penutup yang menegaskan kembali tesis awal."
+                }
+            ],
+            // LEVEL 2: Arguments & Supporting Details
+            [
+                {
+                    prompt: "'First of all, daily exercise boosts heart health and strengthens immunity.' - This sentence starts an:",
+                    correctColor: 'blue',
+                    category: "Body Paragraph",
+                    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=400&auto=format&fit=crop&q=60",
+                    hint: "Menyajikan alasan logis beserta data pendukung."
+                },
+                {
+                    prompt: "Which conjunction shows a cause-and-effect relation in analytical arguments?",
+                    correctColor: 'purple',
+                    category: "Language Feature",
+                    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&auto=format&fit=crop&q=60",
+                    hint: "Contoh: Therefore, Consequently, As a result."
+                },
+                {
+                    prompt: "To strengthen arguments in analytical exposition, a writer needs to provide:",
+                    correctColor: 'blue',
+                    category: "Argumentation",
+                    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&auto=format&fit=crop&q=60",
+                    hint: "Facts, statistics, expert opinions, or logical reasons."
+                }
+            ],
+            // LEVEL 3: Language Features & Reiteration
+            [
+                {
+                    prompt: "'Therefore', 'Hence', and 'Consequently' are classified as:",
+                    correctColor: 'purple',
+                    category: "Connectives",
+                    image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&auto=format&fit=crop&q=60",
+                    hint: "Kata hubung yang menunjukkan hubungan sebab-akibat."
+                },
+                {
+                    prompt: "Which section restates the writer's point of view at the end of the exposition?",
+                    correctColor: 'green',
+                    category: "Structure Final",
+                    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&auto=format&fit=crop&q=60",
+                    hint: "Reiteration / Conclusion."
+                },
+                {
+                    prompt: "'It is crucial that students manage their time wisely.' - 'Crucial' is an example of:",
+                    correctColor: 'red',
+                    category: "Vocabulary",
+                    image: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=400&auto=format&fit=crop&q=60",
+                    hint: "Evaluative words used to express stance."
+                }
+            ]
+        ];
+
+        let state = {
+            playerName: '',
+            playerClass: '',
+            score: 0,
+            currentLevel: 0,
+            currentQuestionIdx: 0,
+            audioMuted: false
+        };
+
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new AudioCtx();
+        }
+
+        function playSound(type) {
+            if (state.audioMuted) return;
+            initAudio();
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'shoot') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
+                } else if (type === 'hit') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08); // E5
+                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.16); // G5
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(110, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (type === 'win') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.12);
+                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.24);
+                    osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime + 0.36);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.5);
+                }
+            } catch (e) {
+                console.log("Audio play error", e);
+            }
+        }
+
+        function speakQuestion() {
+            if ('speechSynthesis' in window) {
+                const q = LEVEL_QUESTIONS[state.currentLevel][state.currentQuestionIdx];
+                const utterance = new SpeechSynthesisUtterance(q.prompt);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function toggleAudio() {
+            state.audioMuted = !state.audioMuted;
+            const btn = document.getElementById('audioBtn');
+            btn.innerHTML = state.audioMuted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+        }
+
+        let canvas, ctx;
+        let balls = [];
+        let bullets = [];
+        let frogAngle = 0;
+        let currentBulletColor = 'red';
+        let animFrameId = null;
+        let trackPath = [];
+
+        function generateTrackPoints(w, h) {
+            const points = [];
+            const centerX = w / 2;
+            const centerY = h / 2;
+            const radiusX = w * 0.38;
+            const radiusY = h * 0.35;
+            
+            for (let t = 0; t <= Math.PI * 3.5; t += 0.05) {
+                const rFactor = 1 - (t / (Math.PI * 4.5));
+                const x = centerX + Math.cos(t) * radiusX * rFactor;
+                const y = centerY + Math.sin(t) * radiusY * rFactor;
+                points.push({ x, y });
+            }
+            return points;
+        }
+
+        function initCanvas() {
+            canvas = document.getElementById('zumaCanvas');
+            ctx = canvas.getContext('2d');
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            trackPath = generateTrackPoints(canvas.width, canvas.height);
+
+            canvas.addEventListener('mousemove', handleMouseMove);
+            canvas.addEventListener('click', handleShoot);
+            canvas.addEventListener('touchmove', handleTouchMove, { passive: true });
+            canvas.addEventListener('touchstart', handleTouchShoot, { passive: true });
+        }
+
+        function handleMouseMove(e) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            const frogX = canvas.width / 2;
+            const frogY = canvas.height / 2;
+            frogAngle = Math.atan2(mouseY - frogY, mouseX - frogX);
+        }
+
+        function handleTouchMove(e) {
+            if (e.touches.length > 0) {
+                const rect = canvas.getBoundingClientRect();
+                const touchX = e.touches[0].clientX - rect.left;
+                const touchY = e.touches[0].clientY - rect.top;
+                const frogX = canvas.width / 2;
+                const frogY = canvas.height / 2;
+                frogAngle = Math.atan2(touchY - frogY, touchX - frogX);
+            }
+        }
+
+        function handleShoot() {
+            shootBullet();
+        }
+
+        function handleTouchShoot(e) {
+            shootBullet();
+        }
+
+        function shootBullet() {
+            const frogX = canvas.width / 2;
+            const frogY = canvas.height / 2;
+            const speed = 9;
+            bullets.push({
+                x: frogX,
+                y: frogY,
+                vx: Math.cos(frogAngle) * speed,
+                vy: Math.sin(frogAngle) * speed,
+                color: currentBulletColor,
+                radius: 12
+            });
+            playSound('shoot');
+            selectNextBulletColor();
+        }
+
+        function selectNextBulletColor() {
+            const q = LEVEL_QUESTIONS[state.currentLevel][state.currentQuestionIdx];
+            if (Math.random() < 0.6) {
+                currentBulletColor = q.correctColor;
+            } else {
+                const randomObj = ZUMA_COLORS[Math.floor(Math.random() * ZUMA_COLORS.length)];
+                currentBulletColor = randomObj.id;
+            }
+        }
+
+        function spawnInitialBalls() {
+            balls = [];
+            const numBalls = 18;
+            const spacing = 28;
+
+            for (let i = 0; i < numBalls; i++) {
+                const colorObj = ZUMA_COLORS[Math.floor(Math.random() * ZUMA_COLORS.length)];
+                balls.push({
+                    pathIdx: -i * spacing,
+                    color: colorObj.id,
+                    radius: 12
+                });
+            }
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Draw Spiral Track
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.lineWidth = 26;
+            ctx.lineCap = 'round';
+            for (let i = 0; i < trackPath.length; i++) {
+                if (i === 0) ctx.moveTo(trackPath[i].x, trackPath[i].y);
+                else ctx.lineTo(trackPath[i].x, trackPath[i].y);
+            }
+            ctx.stroke();
+
+            // Draw Hole Pit
+            const endPoint = trackPath[trackPath.length - 1];
+            if (endPoint) {
+                ctx.beginPath();
+                ctx.arc(endPoint.x, endPoint.y, 22, 0, Math.PI * 2);
+                ctx.fillStyle = '#0f172a';
+                ctx.fill();
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+
+            // 2. Move & Draw Track Balls
+            const ballSpeed = 0.4 + (state.currentLevel * 0.15);
+            for (let i = 0; i < balls.length; i++) {
+                balls[i].pathIdx += ballSpeed;
+                const idx = Math.floor(balls[i].pathIdx);
+
+                if (idx >= trackPath.length - 1) {
+                    showNotification("Bola mencapai lubang! Cobalah lagi level ini.", "bg-rose-500 text-white");
+                    playSound('wrong');
+                    spawnInitialBalls();
+                    break;
+                }
+
+                if (idx >= 0) {
+                    const pos = trackPath[idx];
+                    drawBall(pos.x, pos.y, balls[i].color, balls[i].radius);
+                }
+            }
+
+            // 3. Move Bullets & Handle Collisions
+            for (let b = bullets.length - 1; b >= 0; b--) {
+                const bullet = bullets[b];
+                bullet.x += bullet.vx;
+                bullet.y += bullet.vy;
+
+                drawBall(bullet.x, bullet.y, bullet.color, bullet.radius);
+
+                for (let i = 0; i < balls.length; i++) {
+                    const ballIdx = Math.floor(balls[i].pathIdx);
+                    if (ballIdx < 0) continue;
+                    const ballPos = trackPath[ballIdx];
+
+                    const dx = bullet.x - ballPos.x;
+                    const dy = bullet.y - ballPos.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < bullet.radius + balls[i].radius) {
+                        checkShotAnswer(bullet.color, i);
+                        bullets.splice(b, 1);
+                        break;
+                    }
+                }
+
+                if (bullet.x < 0 || bullet.x > canvas.width || bullet.y < 0 || bullet.y > canvas.height) {
+                    bullets.splice(b, 1);
+                }
+            }
+
+            // 4. Draw Frog Shooter
+            drawFrog();
+
+            animFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function drawBall(x, y, colorId, radius) {
+            const colorObj = ZUMA_COLORS.find(c => c.id === colorId) || ZUMA_COLORS[0];
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = colorObj.hex;
+            ctx.shadowColor = colorObj.hex;
+            ctx.shadowBlur = 8;
+            ctx.fill();
+
+            // Inner shine highlight
+            ctx.beginPath();
+            ctx.arc(x - radius * 0.3, y - radius * 0.3, radius * 0.3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawFrog() {
+            const frogX = canvas.width / 2;
+            const frogY = canvas.height / 2;
+
+            ctx.save();
+            ctx.translate(frogX, frogY);
+            ctx.rotate(frogAngle);
+
+            // Frog Body
+            ctx.beginPath();
+            ctx.arc(0, 0, 24, 0, Math.PI * 2);
+            ctx.fillStyle = '#10b981';
+            ctx.fill();
+            ctx.strokeStyle = '#047857';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Frog Eyes
+            ctx.beginPath();
+            ctx.arc(14, -14, 7, 0, Math.PI * 2);
+            ctx.arc(14, 14, 7, 0, Math.PI * 2);
+            ctx.fillStyle = '#f59e0b';
+            ctx.fill();
+
+            // Shooter Mouth
+            ctx.beginPath();
+            ctx.rect(0, -6, 28, 12);
+            ctx.fillStyle = '#065f46';
+            ctx.fill();
+
+            // Loaded Bullet
+            const loadedColorObj = ZUMA_COLORS.find(c => c.id === currentBulletColor) || ZUMA_COLORS[0];
+            ctx.beginPath();
+            ctx.arc(12, 0, 9, 0, Math.PI * 2);
+            ctx.fillStyle = loadedColorObj.hex;
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function checkShotAnswer(shotColor, hitBallIdx) {
+            const currentQ = LEVEL_QUESTIONS[state.currentLevel][state.currentQuestionIdx];
+
+            if (shotColor === currentQ.correctColor) {
+                playSound('hit');
+                state.score += 50;
+                updateUI();
+
+                balls.splice(hitBallIdx, 1);
+                if (balls.length > 0 && hitBallIdx < balls.length) {
+                    balls.splice(hitBallIdx, 1);
+                }
+
+                showNotification("GREAT JOB! Jawaban Tepat! (+50 Pts)", "bg-emerald-500 text-slate-950");
+
+                state.currentQuestionIdx++;
+                if (state.currentQuestionIdx >= LEVEL_QUESTIONS[state.currentLevel].length) {
+                    setTimeout(advanceLevel, 800);
+                } else {
+                    loadCurrentQuestion();
+                }
+            } else {
+                playSound('wrong');
+                showNotification("KURANG TEPAT! Bola warna tidak sesuai dengan konsep.", "bg-rose-600 text-white");
+            }
+        }
+
+        function advanceLevel() {
+            playSound('win');
+            if (state.currentLevel < LEVEL_QUESTIONS.length - 1) {
+                state.currentLevel++;
+                state.currentQuestionIdx = 0;
+                showNotification(`SELAMAT! Kamu Naik ke Level ${state.currentLevel + 1}!`, "bg-amber-500 text-slate-950");
+                spawnInitialBalls();
+                loadCurrentQuestion();
+                updateUI();
+            } else {
+                finishGame();
+            }
+        }
+
+        function loadCurrentQuestion() {
+            const q = LEVEL_QUESTIONS[state.currentLevel][state.currentQuestionIdx];
+            document.getElementById('questionPrompt').innerText = q.prompt;
+            document.getElementById('questionHint').innerText = `Petunjuk: ${q.hint}`;
+            document.getElementById('qCategory').innerText = q.category;
+            document.getElementById('qImage').src = q.image;
+
+            const legendBox = document.getElementById('colorLegend');
+            legendBox.innerHTML = '';
+            ZUMA_COLORS.forEach(c => {
+                const el = document.createElement('div');
+                el.className = 'flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-950 border border-slate-800';
+                el.innerHTML = `<span class="w-2.5 h-2.5 rounded-full inline-block" style="background:${c.hex}"></span> <span class="text-slate-300 text-[10px]">${c.text}</span>`;
+                legendBox.appendChild(el);
+            });
+
+            selectNextBulletColor();
+        }
+
+        function updateUI() {
+            document.getElementById('topScore').innerText = state.score;
+            document.getElementById('levelBadge').innerText = `LEVEL ${state.currentLevel + 1}`;
+            document.getElementById('targetStatus').innerText = `${LEVEL_QUESTIONS[state.currentLevel].length - state.currentQuestionIdx} Soal Lagi`;
+
+            const titles = [
+                "Thesis & Social Function",
+                "Arguments & Supporting Details",
+                "Language Features & Reiteration"
+            ];
+            const subtitles = [
+                "Cocokkan Thesis Statement & Tujuan Teks Analytical Exposition!",
+                "Identifikasi Argumen, Bukti Pendukung, dan Conjunctions!",
+                "Kuasai Conjunctions, Evaluative Words, dan Reiteration!"
+            ];
+
+            document.getElementById('levelTitle').innerText = titles[state.currentLevel];
+            document.getElementById('levelSubtitle').innerText = subtitles[state.currentLevel];
+        }
+
+        function showNotification(msg, colorClass) {
+            const notif = document.getElementById('gameNotification');
+            const notifText = document.getElementById('notifText');
+            notifText.innerText = msg;
+            notif.className = `p-3 rounded-xl text-xs md:text-sm font-bold flex items-center justify-between transition-all ${colorClass}`;
+            notif.classList.remove('hidden');
+
+            setTimeout(() => {
+                notif.classList.add('hidden');
+            }, 3500);
+        }
+
+        function closeNotif() {
+            document.getElementById('gameNotification').classList.add('hidden');
+        }
+
+        function startGame(event) {
+            event.preventDefault();
+
+            const nameInput = document.getElementById('inputName').value.trim();
+            const classInput = document.getElementById('inputClass').value;
+
+            if (!nameInput || !classInput) return;
+
+            state.playerName = nameInput;
+            state.playerClass = classInput;
+
+            document.getElementById('navPlayerName').innerText = state.playerName;
+            document.getElementById('navPlayerClass').innerText = `Kelas: ${state.playerClass}`;
+            document.getElementById('topUserInfo').classList.remove('hidden');
+
+            document.getElementById('screenRegistration').classList.add('hidden');
+            document.getElementById('screenGame').classList.remove('hidden');
+            document.getElementById('screenGame').classList.add('flex');
+
+            initCanvas();
+            spawnInitialBalls();
+            loadCurrentQuestion();
+            updateUI();
+
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            gameLoop();
+        }
+
+        function finishGame() {
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+
+            document.getElementById('screenGame').classList.add('hidden');
+            document.getElementById('screenCertificate').classList.remove('hidden');
+
+            document.getElementById('certName').innerText = state.playerName;
+            document.getElementById('certClass').innerText = `Kelas: ${state.playerClass}`;
+            document.getElementById('certScore').innerText = `${state.score} Pts`;
+
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('certDate').innerText = dateStr;
+        }
+
+        function printCertificate() {
+            window.print();
+        }
+
+        function restartGame() {
+            state.score = 0;
+            state.currentLevel = 0;
+            state.currentQuestionIdx = 0;
+
+            document.getElementById('screenCertificate').classList.add('hidden');
+            document.getElementById('screenRegistration').classList.remove('hidden');
+        }
+
+        window.addEventListener('resize', () => {
+            if (canvas && !document.getElementById('screenGame').classList.contains('hidden')) {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                trackPath = generateTrackPoints(canvas.width, canvas.height);
+            }
+        });
+    </script>
+</body>
+</html>
